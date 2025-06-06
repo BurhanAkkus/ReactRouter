@@ -1,5 +1,7 @@
 import type { Route } from "./+types/Post";
 import {type SubmitHandler, useForm} from "react-hook-form";
+import {z} from 'zod'
+import {zodResolver} from '@hookform/resolvers/zod'
 
 export async function loader({params}:Route.LoaderArgs){
     return params
@@ -9,16 +11,19 @@ export async function action(){
 
 }
 
-type formFields = {
-    email: string,
-    password: string,
-}
+const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(8)
+})
+
+type formFields = z.infer<typeof schema>
 export default function Finances({params}:Route.LoaderArgs){
 
     const {register,handleSubmit,formState:{errors,isSubmitting},setError} = useForm<formFields>({
         defaultValues:{
             email:"darari@barari.carari",
-        }
+        },
+        resolver: zodResolver(schema)
     });
     const onSubmit: SubmitHandler<formFields> = async (data)=>{
         try {
