@@ -4,6 +4,7 @@ export default [index("routes/home.tsx")
     ,route("about","routes/About.tsx")
     ,route("post/:postId","routes/Post.tsx")
     ,route("counter", "routes/Counter.tsx")
+    ,route("query","routes/Query.tsx")
     ,layout("routes/dashboard.tsx",
         [
         route("finances/:id","routes/Finances.tsx"),
